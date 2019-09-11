@@ -1,0 +1,42 @@
+[
+	{
+		"title" : "excel文档格式",
+		"subject" : [
+			{
+				"summary" : "第一行：字段名（英文单词）",
+				"details" : []
+			},
+			{
+				"summary" : "第二行：中文备注",
+				"details" : []
+			},
+			{
+				"summary" : "第三行：下载内容用于：",
+				"details" : [
+					"a：所有内容",
+					"s：服务端",
+					"c：客户端"
+				]
+			},
+			{
+				"summary" : "第四行：数据类型",
+				"details" : ["string：字符串","num：数字类型","string_array：字符串数组","num_array：数字数组"]
+			},
+			{
+				"summary" : "注意：",
+				"details" : ["1.制作excel过程中，尽量不要人为的空白行，避免不必要的bug；","2.excel内容字段名，必须有id，effect_name，bluePrintsToC字段；"]
+			}
+		]
+	},
+	{
+		"title" : "js",
+		"subject" : [
+			{
+				"summary" : "运用了es6的语法，但并没有编译，所以需要高级浏览器打开；",
+				"details" : []
+			}
+
+
+		]
+	}
+]

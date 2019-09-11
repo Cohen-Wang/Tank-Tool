@@ -1,0 +1,13 @@
+
+icebg_chain.png
+size: 256,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+chain
+  rotate: false
+  xy: 0, 0
+  size: 246, 796
+  orig: 246, 796
+  offset: 0, 0
+  index: -1

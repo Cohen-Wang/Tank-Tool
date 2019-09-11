@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="content-Type" content="text/html">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta http-equiv="Expires" content="0"><!--设置过期时间设置0为直接过期并清除缓存-->
+        <meta http-equiv="Pragma" content="no-cache"><!--HTTP 1.0遗留字段：设置不缓存页面-->
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+        <link rel="shortcut icon" type="image/x-icon" href="../res/images/ico/favicon.ico"><!--shortcut将被标准浏览器忽略，而仅使用icon-->
+        <link rel="icon"          type="image/x-icon" href="../res/images/ico/favicon.ico"><!--Mozilla 可添加任何支持的图像格式的favicon-->
+        <title>游道工作室-铁甲战队-地图编辑器</title>
+        <link rel="stylesheet" type="text/css" href="../css/lib/bootstrap.css"/>
+        <style>
+            /*编辑器*/
+            #mapEditor{
+                position:absolute;top:0;left:0;
+                width:auto;height:auto;
+                transition: all 0.2s;
+                -ms-transform-origin:left top;
+                -webkit-transform-origin:left top;
+                -moz-transform-origin:left top;
+                -o-transform-origin:left top;
+                transform-origin:left top;
+            }
+            #mapEditor img{position:absolute;top:0;left:0;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+            #mapEditor canvas{position:absolute;top:0;left:0;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+            #mapEditor div>div{position:absolute;top:0;left:0;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+            @keyframes rotating{
+                from{transform:rotate(0)}
+                to{transform:rotate(360deg)}
+            }
+            @keyframes moveright{
+                from{left:0}
+                to{left:5000px}
+            }
+            @keyframes rotating00{
+                from{transform:rotate(0)}
+                to{transform:rotate(360deg)}
+            }
+            @keyframes rotating50{
+                from{transform:rotate(0)  translateX(-50%) }
+                to{transform:rotate(360deg)  translateX(-50%)}
+            }
+            @keyframes rotating05{
+                from{transform:rotate(0)  translateY(-50%);}
+                to{transform:rotate(360deg)  translateY(-50%);}
+            }
+            @keyframes rotating55{
+                from{transform:rotate(0)  translateX(-50%) translateY(-50%);}
+                to{transform:rotate(360deg)  translateX(-50%) translateY(-50%);}
+            }
+            @keyframes rotating510{
+                from{transform:rotate(0)  translateX(-50%) translateY(-100%);}
+                to{transform:rotate(360deg)  translateX(-50%) translateY(-100%);}
+            }
+            @keyframes rotating105{
+                from{transform:rotate(0)  translateX(-100%) translateY(-50%);}
+                to{transform:rotate(360deg)  translateX(-100%) translateY(-50%);}
+            }
+            @keyframes rotating100{
+                from{transform:rotate(0)  translateX(-100%);}
+                to{transform:rotate(360deg)  translateX(-100%);}
+            }
+            @keyframes rotating010{
+                from{transform:rotate(0)  translateY(-100%);}
+                to{transform:rotate(360deg)  translateY(-100%);}
+            }
+            @keyframes rotating1010{
+                from{transform:rotate(0)  translateX(-100%) translateY(-100%);}
+                to{transform:rotate(360deg)  translateX(-100%) translateY(-100%);}
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="page-header">
+                            <h1>
+                                <small>地图编辑器</small>
+                                <a href="../index.html" class="pull-right" style="font-size:12px;line-height: 39px;">返回首页</a>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6" style="height:780px;overflow: auto;">
+                        <div>
+                            <div class="form-group">
+                                <button class="btn btn-info btn-lg btn-block btn-file">
+                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                    <p>上传文件</p>
+                                    <input type="file" class="btn btn-default" accept="text/plain" @change="uploadFileOfOldMap(event)">
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">地图ID</div>
+                                    <input type="text" class="form-control" v-model="MapConfig.id">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">缩放比</div>
+                                    <input type="text" class="form-control" v-model="MapConfig.scale">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">地形索引</div>
+                                    <input type="text" class="form-control" v-model="MapConfig.terrainIndex">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">地图宽</div>
+                                    <input type="text" class="form-control" v-model="MapConfig.width" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">地图高</div>
+                                    <input type="text" class="form-control" v-model="MapConfig.height" readonly>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-default" @click="setTheSizeOfMapEditor()">获取画布大小</button>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <button href="###" class="btn btn-success btn-block" data-toggle="modal" data-target="#addLayer">添加图层</button>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-info" v-for="(layerItem , layerIndex) in MapConfig.layers">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <span>#</span> <b v-text="layerIndex+1"></b>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>zOrder : </span> <b class="text-danger" v-text="layerItem.zOrder"></b>
+                                    <button class="close" @click="deleteLayer(layerIndex)">&times;</button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label>层纵深：</label>
+                                    <input type="text" class="form-control" v-model="layerItem.depth"/>
+                                </div>
+
+                                <div class="btn-group-vertical">
+                                    <button class="btn btn-success btn-file">
+                                        <p>上传图片</p>
+                                        <input type="file" class="btn" style="" accept="image/*" @change="addImages(event, layerIndex)"/>
+                                    </button>
+                                    <button class="btn btn-success" @click="addPlist(layerIndex)"> 帧动画 </button>
+                                    <button class="btn btn-success" @click="addSpine(layerIndex)"> 骨骼动画 </button>
+                                </div>
+                                <hr>
+
+                                <div class="panel-group" id="accordion">
+                                    <!--循环 components-->
+                                    <div class="panel panel-warning" v-for="(componentItem , componentIndex) in layerItem.components" >
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <button type="button" class="close" @click="deleteImage(layerIndex, componentIndex)">&times;</button>
+                                                <button type="button" class="close" title="显示/隐藏" @click="componentItem._isShow = !componentItem._isShow">
+                                                    <span v-show="componentItem._isShow">&ndash;</span>
+                                                    <span v-show="!componentItem._isShow">&plusmn;</span>
+                                                </button>
+                                                <span v-text="'#' + (componentIndex+1)"></span>
+                                                <a style="display:inline-block;width:100px;overflow:hidden;text-overflow:ellipsis;" data-toggle="collapse" data-parent="#accordion" :href="'#'+componentItem._name" :title="componentItem._name">{{componentItem.image}}</a>
+                                            </h4>
+                                        </div>
+                                        <div :id="componentItem._name" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>图片名:</label>
+                                                        <input type="text" class="form-control" v-model="componentItem.image" readonly/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>图片宽:</label>
+                                                        <input type="text" class="form-control" v-model="componentItem.width"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>图片高:</label>
+                                                        <input type="text" class="form-control" v-model="componentItem.height"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>X轴坐标:</label>
+                                                        <input type="text" class="form-control" v-model="componentItem.coordX" @keydown.38="componentItem.coordX++" @keydown.40="componentItem.coordX--">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Y轴坐标:</label>
+                                                        <input type="text" class="form-control" v-model="componentItem.coordY" @keydown.38="componentItem.coordY++" @keydown.40="componentItem.coordY--">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>图片类型:</label>
+                                                        <select id="type" name="type" class="form-control" @change="mapTypeChange(componentItem)" v-model="componentItem.type">
+                                                            <option value="0" disabled>-选择类型-</option>
+                                                            <option value="1">地形地貌</option>
+                                                            <option value="2">风景</option>
+                                                            <option value="3">装饰物</option>
+                                                            <option value="4">雾气</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div v-if="componentItem.type === '1'">
+                                                        <div class="form-group">
+                                                            <label>id:</label>
+                                                            <input type="text" name="" class="form-control" v-model="componentItem.id"/>
+                                                        </div>
+                                                    </div>
+
+                                                    <div v-if="componentItem.type === '2'">
+                                                        <div class="text-danger text-center">
+                                                            <h3>无添加</h3>
+                                                        </div>
+                                                    </div>
+
+                                                    <div v-if="componentItem.type === '3'">
+                                                        <div class="form-group">
+                                                            <label>X轴锚点:</label>
+                                                            <select name="anchorX" class="form-control" v-model="componentItem.anchorX">
+                                                                <option name="type" value="0">0</option>
+                                                                <option name="type" value="0.5">0.5</option>
+                                                                <option name="type" value="1">1</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Y轴锚点:</label>
+                                                            <select name="anchorY" class="form-control" v-model="componentItem.anchorY">
+                                                                <option name="type" value="0">0</option>
+                                                                <option name="type" value="0.5">0.5</option>
+                                                                <option name="type" value="1">1</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>装饰类型:</label>
+                                                            <select id="decorationType" name="decorationType" class="form-control" @change="decorationTypeChange(componentItem)" v-model="componentItem.decorationType">
+                                                                <option value="0">-选择类型-</option>
+                                                                <option value="1">装饰物(自转式)</option>
+                                                                <option value="2">装饰物(帧动画)</option>
+                                                                <option value="3">骨骼动画</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group" v-if="componentItem.type === '3' && componentItem.decorationType === '1'">
+                                                            <label>旋转时刻:</label>
+                                                            <input type="range" defaultValue="0" step="10" min="-10" max="720" v-model="componentItem.rotationMoment"/>
+                                                            <h3 class="text-danger text-center">{{componentItem.rotationMoment + ' 度'}}</h3>
+                                                        </div>
+
+                                                        <div class="form-group" v-if="componentItem.type === '3' && componentItem.decorationType === '2'">
+                                                            <label>属性列表:</label>
+                                                            <input type="text" class="form-control" v-model="componentItem.plist"/>
+                                                        </div>
+
+                                                        <div v-if="componentItem.type === '3' && componentItem.decorationType === '3'">
+                                                            <div class="form-group" >
+                                                                <label>spine名称:</label>
+                                                                <input type="text" class="form-control" v-model="componentItem.spine" @blur="createSpine(componentItem,layerIndex,componentIndex)"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>动画:</label>
+                                                                <input type="text" class="form-control" v-model="componentItem.animation" @blur="createSpine(componentItem,layerIndex,componentIndex)"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>是否镜像 : </label>
+                                                                <br>
+                                                                <div class="btn-group">
+                                                                    <button type="button" class="btn btn-info" :class="{active:componentItem.isFliping === true}"  @click="componentItem.isFliping = true">是</button>
+                                                                    <button type="button" class="btn btn-info" :class="{active:componentItem.isFliping === false}" @click="componentItem.isFliping = false">否</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>translateX:</label>
+                                                                <input type="text" class="form-control" v-model="componentItem._translateX" @blur="createSpine(componentItem,layerIndex,componentIndex)"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>translateY:</label>
+                                                                <input type="text" class="form-control" v-model="componentItem._translateY" @blur="createSpine(componentItem,layerIndex,componentIndex)"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>坐标系:</label>
+                                                                <br>
+                                                                <div class="btn-group">
+                                                                    <button type="button" class="btn btn-default" :class="{active:componentItem._ShowCoordinate === true}"  @click="componentItem._ShowCoordinate = true;createSpine(componentItem,layerIndex,componentIndex)">显示</button>
+                                                                    <button type="button" class="btn btn-default" :class="{active:componentItem._ShowCoordinate === false}" @click="componentItem._ShowCoordinate = false;createSpine(componentItem,layerIndex,componentIndex)">隐藏</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>界限:</label>
+                                                                <br>
+                                                                <div class="btn-group">
+                                                                    <button type="button" class="btn btn-default" :class="{active:componentItem._debugRendering === true}"  @click="componentItem._debugRendering = true;createSpine(componentItem,layerIndex,componentIndex)">显示</button>
+                                                                    <button type="button" class="btn btn-default" :class="{active:componentItem._debugRendering === false}" @click="componentItem._debugRendering = false;createSpine(componentItem,layerIndex,componentIndex)">隐藏</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>背景:</label>
+                                                                <br>
+                                                                <div class="btn-group">
+                                                                    <button type="button" class="btn btn-default" :class="{active:componentItem._showBackground === true}"  @click="componentItem._showBackground = true;createSpine(componentItem,layerIndex,componentIndex)">显示</button>
+                                                                    <button type="button" class="btn btn-default" :class="{active:componentItem._showBackground === false}" @click="componentItem._showBackground = false;createSpine(componentItem,layerIndex,componentIndex)">隐藏</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div v-if="componentItem.type === '4'">
+                                                        <div class="form-group">
+                                                            <label>缩放比例:</label>
+                                                            <input type="range" name="" id="scale" defaultValue="1" step="0.01" min="0" max="20" v-model="componentItem.scale"/>
+                                                            <h3 class="text-danger text-center">{{componentItem.scale}}</h3>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>速度:</label>
+                                                            <input type="range" name="" id="speed" defaultValue="0" step="1" min="0" max="1000" v-model="componentItem.speed"/>
+                                                            <h3 class="text-danger text-center">{{componentItem.speed + ' px/s'}}</h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!--v-for-->
+                                </div>
+                            </div><!--panel-body-->
+                        </div><!--row-->
+                    </div><!--col-md-2-->
+
+                    <div class="col-lg-10 col-md-9 col-sm-8 col-xs-6">
+                        <div id="EditorArea">
+                            <div class="panel panel-default">
+                                <div class="panel-body" style="height:720px;position:relative;background-color: #f0f0f0;overflow: auto;">
+                                    <div id="mapEditor" style="overflow: hidden;" :style="{'height' : MapConfig.height + 'px', 'width' : MapConfig.width + 'px'}">
+                                        <div v-for="(layerItem , layerIndex) in MapConfig.layers" :style="{'z-index' : layerIndex+1}">
+                                            <!--常规照片的 img-->
+                                            <img
+                                                    :src="componentItem._url"
+                                                    v-for="(componentItem , componentIndex) in layerItem.components"
+                                                    v-show="componentItem._isShow"
+                                                    v-if="componentItem.type === '1' || componentItem.type === '2' || (componentItem.decorationType && componentItem.decorationType != 2 && componentItem.decorationType != 3) "
+
+                                                    :style="{
+                                                    'left' : componentItem.coordX+'px',
+                                                    'top' : componentItem.coordY + 'px',
+                                                    'transform' : 'scale('+ componentItem.scale +')',
+                                                    'transform-origin': (50-componentItem.anchorX*100) + '%' + ' ' + (50-componentItem.anchorY*100)+'%',
+                                                    'animation' : 'rotating' + componentItem.anchorX * 10 + componentItem.anchorY * 10 + ' ' + (360/componentItem.rotationMoment).toFixed(0) + 's linear infinite',
+                                                    'transform' : 'translateX('+ (-100 * componentItem.anchorX) +'%) translateY('+(-100 * componentItem.anchorY)+'%)',
+                                                    'z-index' : +((layerIndex+1).toString() + (componentIndex+1).toString()),
+                                                    }"
+                                                    :data-type="componentItem.type"
+                                                    :id="componentItem._name"
+                                                    :title="componentItem._name" />
+
+                                            <!--运动 - 雾 - 的照片-->
+                                            <img
+                                                    :src="componentItem._url"
+                                                    v-if="componentItem.type === '4'"
+
+                                                    :style="{
+                                                    'left': componentItem.coordX + 'px',
+                                                    'top' : componentItem.coordY + 'px',
+                                                    'transform' : 'scale('+ componentItem.scale +')',
+                                                    'animation' : 'moveright ' + (5000/componentItem.speed).toFixed(0) + 's linear infinite',
+                                                    'z-index' : +((layerIndex+1).toString() + (componentIndex+1).toString()),
+                                                    }"
+                                                    :data-type="componentItem.type"
+                                                    :id="componentItem._name"
+                                                    :title="componentItem._name"
+                                                    v-for="(componentItem , componentIndex) in layerItem.components"
+                                                    v-show="componentItem._isShow"/>
+
+                                            <!--plist的div-->
+                                            <div v-for="(componentItem , componentIndex) in layerItem.components"
+                                                 v-if="componentItem.type === '3' && componentItem.decorationType === '2'"
+                                                 style="background-color: rgba(255,0,0,0.5);"
+                                                 :style="{
+                                                         'width':componentItem.width+'px',
+                                                         'height':componentItem.height+'px',
+                                                         'left':componentItem.coordX+'px',
+                                                         'top':componentItem.coordY+'px',
+                                                         'z-index' : +((layerIndex+1).toString() + (componentIndex+1).toString()),
+                                                         }">
+                                            </div>
+
+                                            <!--spine的canvas-->
+                                            <canvas
+                                                    :id = "'spineCanvas'+ layerIndex + componentIndex"
+                                                    v-for="(componentItem, componentIndex) in layerItem.components"
+                                                    v-if="componentItem.type === '3' && componentItem.decorationType === '3'"
+                                                    :width="componentItem.width"
+                                                    :height="componentItem.height"
+                                                    :style="{
+                                                            'left':componentItem.coordX+'px',
+                                                            'top':componentItem.coordY+'px',
+                                                            'z-index' : +((layerIndex+1).toString() + (componentIndex+1).toString()),
+                                                            }">
+                                            </canvas>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div style="height:36px;">
+                                        <div class="col-md-2 form-horizontal">
+                                            <div class="form-group">
+                                                <label for="cutWidth" class="col-md-5 control-label">裁剪宽度:</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" class="form-control" id="cutWidth" v-model="cutWidth"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 form-horizontal">
+                                            <div class="form-group">
+                                                <label for="cutHeight" class="col-md-5 control-label">裁剪高度:</label>
+                                                <div class="col-md-6">
+                                                    <input type="text" class="form-control" id="cutHeight" v-model="cutHeight"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 form-horizontal">
+                                            <div class="form-group">
+                                                <label class="col-md-5 control-label" v-text="mapEditorSize"></label>
+                                                <div class="col-md-6">
+                                                    <input type="range" class="form-control" v-model="mapEditorSize" value="1" min="0.1" max="2" step="0.01" @change="fullScreen(mapEditorSize)"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 btn-group">
+                                            <button class="btn btn-default" @click="fullScreen();">一键全屏</button>
+                                            <button class="btn btn-default" data-toggle="modal" data-target="#download"> 一键导出  </button>
+                                            <button class="btn btn-default" @click="download({isTxt : true})"> 下载txt  </button>
+                                            <button class="btn btn-default" @click="download({isLua : true})"> 下载lua  </button>
+                                            <button class="btn btn-default" @click="download({isImage : true})"> 下载图片  </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--row-->
+            </div><!--container-fluid-->
+
+
+            <!--添加图层 S-->
+            <div class="modal" id="addLayer">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">&times;</button>
+                            <p class="modal-title">添加图层</p>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>层级:</label>
+                                <input type="text" class="form-control" v-model="tempIndex"/>
+                            </div>
+                            <div class="form-group">
+                                <label>层纵深:</label>
+                                <input type="text" class="form-control" v-model="tempDepth"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary btn-sm" data-dismiss="modal" @click="addLayer()"> 确认 </button>
+                            <button class="btn btn-default btn-sm" data-dismiss="modal"> 取消 </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--添加图层 E-->
+
+            <!--确认下载-->
+            <div class="modal" id="download">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">&times;</button>
+                            <p class="modal-title">确认导出?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary btn-sm" data-dismiss="modal" @click="download({isTxt:true, isLua:true,isImage:true})"> 确认 </button>
+                            <button class="btn btn-default btn-sm" data-dismiss="modal"> 取消 </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!--#map-->
+
+        <div id="canvasContainer" style="display: none;"></div>
+
+
+        <script type="text/javascript">
+            let scriptArr = [
+                "../js/lib/jquery.min.js",
+                "../js/lib/bootstrap.min.js",
+                "../js/lib/vue.min.js",
+                "../js/lib/download.js",
+                "../js/lib/underscore.js",
+                "../js/lib/spine-canvas.js",
+                "../js/util/cyber.utils.js",
+                "../js/app/class.spineCanvas.js",
+                "../js/app/cyber.countdown.js",
+                "../js/config/mapEditor.config.js",
+                "../js/dist/mapEditor.js"
+            ];
+
+            for (let i = 0; i < scriptArr.length; i++) {
+                //js后缀加个时间戳每回更新都会改变，浏览器视其为新的js不会进行缓存
+                document.write('<script type="text/javascript" src="' + scriptArr[i] + '?time=' + new Date().getTime() + '"><'+'/'+'script>');
+            }
+        </script>
+    </body>
+</html>

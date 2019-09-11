@@ -1,0 +1,13 @@
+
+forest_flying02.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flying
+  rotate: false
+  xy: 0, 0
+  size: 141, 141
+  orig: 141, 141
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="content-Type" content="text/html">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta http-equiv="Expires" content="0"><!--设置过期时间设置0为直接过期并清除缓存-->
+        <meta http-equiv="Pragma" content="no-cache"><!--HTTP 1.0遗留字段：设置不缓存页面-->
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+        <link rel="shortcut icon" type="image/x-icon" href="../res/images/ico/favicon.ico"><!--shortcut将被标准浏览器忽略，而仅使用icon-->
+        <link rel="icon"          type="image/x-icon" href="../res/images/ico/favicon.ico"><!--Mozilla 可添加任何支持的图像格式的favicon-->
+		<title>游道工作室-铁甲战队-地形编辑器</title>
+		<link rel="stylesheet" type="text/css" href="../css/lib/animate.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/lib/bootstrap.css"/>
+		<style type="text/css">
+			#canvas{background-color: #e4e6e8;}
+		</style>
+	</head>
+	<body>
+        <div id="terrainEditor">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="page-header">
+                            <h1>
+                                <small>边缘编辑器</small>
+                                <a href="../index.html" class="pull-right" style="font-size:12px;line-height: 39px;">返回首页</a>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                        <button class="btn btn-info btn-lg btn-block btn-file">
+                            <span class="glyphicon glyphicon-folder-open"></span>
+                            <p>上传图片（png）</p>
+                            <input type="file" class="btn btn-default" accept="image/png" @change="openImage(event)">
+                        </button>
+                        <button class="btn btn-warning btn-lg btn-block btn-file" :disabled="hasImage === false">
+                            <span class="glyphicon glyphicon-tags"></span>
+                            <p>上传出生点（txt）</p>
+                            <input type="file" class="btn btn-default" accept="text/plain" :disabled="hasImage === false" @change="uploadBornPoints(event)">
+                        </button>
+                        <hr>
+
+                        <div class="alert alert-info">
+                            <div class="form-group">
+                                <label>选择显示内容：</label>
+                                <br>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-info" :class="{active : showImage === true}" @click="showImage = !showImage;getAndShowCoordinate()">原图</button>
+                                    <button type="button" class="btn btn-info" :class="{active : oCoordinate.show === true}" @click="oCoordinate.show = !oCoordinate.show;getAndShowCoordinate()">坐标</button>
+                                    <button type="button" class="btn btn-info" :class="{active : oLine.show === true}" @click="oLine.show = !oLine.show;getAndShowCoordinate()">连线</button>
+                                    <button type="button" class="btn btn-info" :class="{active : oArea.show === true}" @click="oArea.show = !oArea.show;getAndShowCoordinate()">覆盖</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>过滤：</label>
+                                <br>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-info" :class="{active : pointType === 1}" @click="pointType = 1;getAndShowCoordinate()">所有点</button>
+                                    <button type="button" class="btn btn-info" :class="{active : pointType === 2}" @click="pointType = 2;getAndShowCoordinate()">公差点</button>
+                                    <button type="button" class="btn btn-info" :class="{active : pointType === 3}" @click="pointType = 3;getAndShowCoordinate()">凸多边形</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>鼠标：</label>
+                                <br>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-info" :class="{active : isCrucifixShow === true}" @click="isCrucifixShow = !isCrucifixShow">显示</button>
+                                    <button type="button" class="btn btn-info" :class="{active : isCrucifixFull === true}" @click="isCrucifixFull = !isCrucifixFull;">全屏</button>
+                                    <button type="button" class="btn btn-info" :class="{active : isCrucifixHorizontal === true}" @click="isCrucifixHorizontal = !isCrucifixHorizontal">
+                                        <span class="glyphicon glyphicon-resize-horizontal"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-info" :class="{active : isCrucifixVertical === true}" @click="isCrucifixVertical = !isCrucifixVertical">
+                                        <span class="glyphicon glyphicon-resize-vertical"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>设置：</label>
+                                <br>
+                                <div class="btn-group btn-group-sm">
+                                    <button type="button" class="btn btn-info" title="设置" data-toggle="modal" data-target="#setModal">
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>缩放：</label>
+                                <br>
+                                <input type="range" min="0" max="1" step="0.000001" value="1" v-model="canvasScale">
+                                <p v-text="canvasScale"></p>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <button type="button" class="btn btn-block btn-primary btn-lg" data-toggle="modal" data-target="#showData">显示详情</button>
+                    </div>
+
+                    <div class="col-lg-10 col-md-9 col-sm-8 col-xs-6" style="border-left:1px dashed #ccc;">
+                        <div>
+                            <small v-text="'当前图片大小(宽:'+imageWidth+',高:'+imageHeight+')'"></small> &nbsp;&nbsp;&nbsp;
+                            <small v-text="'当前鼠标(x:'+mouse.x+',y:'+mouse.y+')'"></small> &nbsp;&nbsp;&nbsp;
+                            <small v-text="'当前交点(x:'+intersection.x+',y:'+intersection.y+')'"></small> &nbsp;&nbsp;&nbsp;
+                            <small v-text="'当前线段起始点(x:'+segmentStartPoint.x+',y:'+segmentStartPoint.y+')'"></small> &nbsp;&nbsp;&nbsp;
+                            <small v-text="'当前线段结束点(x:'+segmentEndPoint.x+',y:'+segmentEndPoint.y+')'"></small> &nbsp;&nbsp;&nbsp;
+                            <small v-text="'当前线段斜率(k:'+segmentSlope+')'"></small> &nbsp;&nbsp;&nbsp;
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-body" style="height:750px;overflow: auto;padding: 0;">
+                                <canvas id="canvas" @mousemove="canvasMoveFn()" @click="canvasClickFn()" style="transform-origin: left top" :style="{'transform':'scale('+ canvasScale +')'}"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--显示数据-modal S-->
+            <div class="modal" id="showData" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">数据</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#consequenceArray" data-toggle="tab" @click="downloadContentFn('edge')">坐标：{{consequenceArray.length}}</a></li>
+                                    <li><a href="#bornPoints" data-toggle="tab" @click="downloadContentFn('bornPoint')">出生点：{{bornPoints.length}}</a></li>
+                                </ul>
+                                <div class="tab-content">
+
+                                    <!--consequenceArray-->
+                                    <div class="tab-pane active" id="consequenceArray" style="padding-top: 15px;padding-bottom: 15px">
+                                        <pre v-text="consequenceArray" style="height: 600px;"></pre>
+                                        <div class="btn-group btn-group-justified">
+                                            <div class="btn-group btn-group-lg">
+                                                <button type="button" class="btn btn-info" @click="downloadTxt(consequenceArray)">.txt</button>
+                                            </div>
+                                            <div class="btn-group btn-group-lg">
+                                                <button type="button" class="btn btn-info" @click="downloadJson(consequenceArray)">.json</button>
+                                            </div>
+                                            <div class="btn-group btn-group-lg">
+                                                <button type="button" class="btn btn-info" @click="downloadEdgePointsLua(consequenceArray)">.lua</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--bornPoints-->
+                                    <div class="tab-pane" id="bornPoints" style="padding-top: 15px;padding-bottom: 15px">
+                                        <div style="height: 600px;overflow: auto;">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>x</th>
+                                                        <th>y</th>
+                                                        <th>斜切</th>
+                                                        <th>方向</th>
+                                                        <th>组</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="(bornPointItem, bornPointIndex) in bornPoints">
+                                                        <td v-text="bornPointIndex+1"></td>
+                                                        <td v-text="bornPointItem.x"></td>
+                                                        <td v-text="bornPointItem.y"></td>
+                                                        <td v-text="bornPointItem.rotation"></td>
+                                                        <td v-text="bornPointItem.direction"></td>
+                                                        <td v-text="bornPointItem.group"></td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-primary btn-xs" disabled @click="console.log(bornPointItem)"><span class="glyphicon glyphicon-wrench"></span></button>
+                                                                <button type="button" class="btn btn-danger btn-xs" @click="deleteBornPoint(bornPointIndex)"><span class="glyphicon glyphicon-trash"></span></button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <button type="button" class="btn btn-success btn-lg btn-block" @click="downloadAllBornPoints(bornPoints)">一键下载出生点（.txt，.json，.lua）</button>
+                                        <!--<div class="btn-group btn-group-justified">-->
+                                            <!--<div class="btn-group btn-group-lg">-->
+                                                <!--<button type="button" class="btn btn-success" @click="downloadTxt(bornPoints)">.txt</button>-->
+                                            <!--</div>-->
+                                            <!--<div class="btn-group btn-group-lg">-->
+                                                <!--<button type="button" class="btn btn-success" @click="downloadBornPointsJson(bornPoints)">.json</button>-->
+                                            <!--</div>-->
+                                            <!--<div class="btn-group btn-group-lg">-->
+                                                <!--<button type="button" class="btn btn-success" @click="downloadBornPointsLua(bornPoints)">.lua</button>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!--modal-body-->
+                    </div>
+                </div>
+            </div>
+            <!--显示数据-modal S-->
+
+            <!--添加出生点-modal S-->
+            <div class="modal" id="bornPoint-modal" data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">添加出生点</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>交点X：</label>
+                                <input type="text" class="form-control" v-model="intersection.x" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>交点Y：</label>
+                                <input type="text" class="form-control" v-model="intersection.y" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>当前斜率：</label>
+                                <input type="text" class="form-control" v-model="segmentSlope" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>方向：</label>
+                                <br>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-info" :class="{active : bornPointDirection === 1}" @click="bornPointDirection = 1"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                                    <button type="button" class="btn btn-info" :class="{active : bornPointDirection === 2}" @click="bornPointDirection = 2"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>所属组：</label><br>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-info" v-for="(item, index) in bornGroupConfig" :class="{active:bornGroup===item}" @click="bornGroup=item" v-text="item"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" @click="addBornPoint()" data-dismiss="modal">确认</button>
+                            <button class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--添加出生点-modal E-->
+
+            <!--设置-modal S-->
+            <div class="modal" id="setModal">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">边缘设置</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!--边缘-->
+                            <div class="form-group">
+                                <label>透明度: </label>
+                                <input type="text" class="form-control" v-model="alpha">
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label>阈值：</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" @click="changeThresholdValue('up');">
+                                                <span class="glyphicon glyphicon-arrow-up"></span>
+                                            </button>
+                                        </span>
+                                        <input type="text" class="form-control" v-model="thresholdValue" style="text-align: center">
+
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" @click="changeThresholdValue('down');">
+                                                <span class="glyphicon glyphicon-arrow-down"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--坐标-->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label>坐标宽度：</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" @click="if(oCoordinate.width<10)oCoordinate.width+=1;getAndShowCoordinate()">
+                                                <span class="glyphicon glyphicon-arrow-up"></span>
+                                            </button>
+                                        </span>
+                                        <input type="text" class="form-control" v-model="oCoordinate.width" style="text-align: center">
+
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" @click="if(oCoordinate.width>0)oCoordinate.width-=1;getAndShowCoordinate()">
+                                                <span class="glyphicon glyphicon-arrow-down"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">坐标颜色 : </label>
+                                <input type="color" class="form-control" v-model="oCoordinate.color" value="#0000ff" @change="getAndShowCoordinate()">
+                            </div>
+                            <!--连线-->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label>连线宽度：</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" @click="if(oLine.width<10)oLine.width+=1;getAndShowCoordinate()">
+                                                <span class="glyphicon glyphicon-arrow-up"></span>
+                                            </button>
+                                        </span>
+                                        <input type="text" class="form-control" v-model="oLine.width" style="text-align: center">
+
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" @click="if(oLine.width>0)oLine.width-=1;getAndShowCoordinate()">
+                                                <span class="glyphicon glyphicon-arrow-down"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">连线颜色 : </label>
+                                <input type="color" class="form-control" v-model="oLine.color" value="#ff0000" @change="getAndShowCoordinate()">
+                            </div>
+                            <!--覆盖-->
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label>覆盖透明度：</label>
+                                    <input type="range" min="0" max="1" step="0.1" v-model="oArea.opacity" @change="getAndShowCoordinate()" style="display: inline-block;">
+                                    <b class="text-primary" v-text="oArea.opacity"></b>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">覆盖颜色 : </label>
+                                <input type="color" class="form-control" v-model="oArea.color" value="#80ffff" @change="getAndShowCoordinate()">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div><!--设置-modal E-->
+		</div><!--#terrainEditor-->
+
+
+        <script type="text/javascript">
+            let scriptArr = [
+                "../js/lib/jquery.min.js",
+                "../js/lib/bootstrap.min.js",
+                "../js/lib/vue.min.js",
+                "../js/lib/vue-resource.min.js",
+                "../js/lib/download.js",
+                "../js/util/cyber.utils.js",
+                "../js/util/cyber.mathUtil.js",
+                "../js/app/cyber.pngEdge.js",
+                "../js/app/cyber.slide.js",
+                "../js/dist/terrainEditor.js",
+            ];
+
+            for (let i = 0; i < scriptArr.length; i++) {
+                //js后缀加个时间戳每回更新都会改变，浏览器视其为新的js不会进行缓存
+                document.write('<script type="text/javascript" src="' + scriptArr[i] + '?time=' + new Date().getTime() + '"><'+'/'+'script>');
+            }
+        </script>
+	</body>
+</html>

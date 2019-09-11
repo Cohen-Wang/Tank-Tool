@@ -1,0 +1,69 @@
+
+map7_arm01.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+01_arm
+  rotate: false
+  xy: 358, 697
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+01_hand
+  rotate: false
+  xy: 574, 801
+  size: 296, 135
+  orig: 296, 135
+  offset: 0, 0
+  index: -1
+01_uparm
+  rotate: false
+  xy: 0, 254
+  size: 280, 309
+  orig: 280, 309
+  offset: 0, 0
+  index: -1
+02_arm
+  rotate: false
+  xy: 170, 0
+  size: 153, 252
+  orig: 153, 252
+  offset: 0, 0
+  index: -1
+02_hand
+  rotate: false
+  xy: 583, 607
+  size: 192, 192
+  orig: 192, 192
+  offset: 0, 0
+  index: -1
+03_arm
+  rotate: false
+  xy: 0, 10
+  size: 168, 242
+  orig: 168, 242
+  offset: 0, 0
+  index: -1
+03_hand
+  rotate: false
+  xy: 583, 483
+  size: 220, 122
+  orig: 220, 122
+  offset: 0, 0
+  index: -1
+03_uparm
+  rotate: false
+  xy: 0, 565
+  size: 356, 371
+  orig: 356, 371
+  offset: 0, 0
+  index: -1
+light_arm
+  rotate: false
+  xy: 358, 570
+  size: 223, 125
+  orig: 223, 125
+  offset: 0, 0
+  index: -1

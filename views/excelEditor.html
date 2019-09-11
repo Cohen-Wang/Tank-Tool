@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="content-Type" content="text/html">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<meta http-equiv="Expires" content="0"><!--设置过期时间设置0为直接过期并清除缓存-->
+		<meta http-equiv="Pragma" content="no-cache"><!--HTTP 1.0遗留字段：设置不缓存页面-->
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+		<link rel="shortcut icon" type="image/x-icon" href="../res/images/ico/favicon.ico"><!--shortcut将被标准浏览器忽略，而仅使用icon-->
+		<link rel="icon"          type="image/x-icon" href="../res/images/ico/favicon.ico"><!--Mozilla 可添加任何支持的图像格式的favicon-->
+		<title>游道工作室-铁甲战队-Excel编辑器</title>
+		<link rel="stylesheet" href="../css/lib/animate.css">
+		<link rel="stylesheet" href="../css/lib/bootstrap.css"/>
+		<link rel="stylesheet" href="../css/lib/cyber.loading.css">
+		<link rel="stylesheet" href="../css/lib/sweetalert.min.css">
+		<style>
+			.excel-pre{height:560px;overflow: auto;}
+		</style>
+	</head>
+	<body>
+		<div id="excelEditor">
+
+			<div class="container-fluid">
+				<!--临时查看-->
+				<div class="" style="display: none">
+					<blockquote>
+						<p>测试</p>
+					</blockquote>
+					<pre class="well" style="height:540px;" v-text="sheetContent"></pre>
+				</div>
+				<!--临时查看-->
+
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="page-header">
+							<h1>
+								<small>Excel Editor</small>
+								<a href="../index.html" class="pull-right" style="font-size:12px;line-height: 39px;">返回首页</a>
+							</h1>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<!--按钮区 S-->
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-5">
+						<button class="btn btn-info btn-block btn-lg btn-file">
+							<p>EXCEL</p>
+							<input type="file" class="btn btn-default" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple @change="addExcel(event)"/>
+						</button>
+						<hr>
+
+						<div class="alert alert-info">
+							<div class="form-group">
+								<label>查看内容:</label>
+								<br>
+								<div class="btn-group">
+									<button type="button" class="btn btn-info" v-text="chosenCS.name"></button>
+									<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li><a href="javascript:void(0);" v-for="(item, index) in chosenCS_config" @click="changeChosenCS(item)" v-text="item.name"></a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<hr>
+
+						<button class="btn btn-primary btn-block btn-lg" v-show="Object.keys(allDataOfExcels).length !==0" data-toggle="modal" data-target="#downloadInfo-modal">下载</button>
+					</div>
+					<!--按钮区 E-->
+
+					<!--显示区 S-->
+					<div class="col-lg-10 col-md-9 col-sm-8 col-xs-7" style="border-left:1px dashed #ccc;">
+						<ul id="myTab" class="nav nav-tabs nav-justified">
+							<li class="active"><a href="#json" data-toggle="tab"> .json </a></li>
+							<li><a href="#lua" data-toggle="tab"> .lua </a></li>
+							<li><a href="#xml" data-toggle="tab"> .xml </a></li>
+							<li><a href="#explain" data-toggle="tab"> 使用说明 </a></li>
+						</ul>
+						<div id="myTabContent" class="tab-content">
+							<div class="tab-pane in active" id="json">
+								<div style="padding: 15px 0;">
+									<pre class="well excel-pre" v-html="jsonHTML"></pre>
+								</div>
+							</div>
+							<div class="tab-pane" id="lua">
+								<div style="padding: 15px 0;">
+									<pre class="well excel-pre" v-text="luaHTML"></pre>
+								</div>
+							</div>
+							<div class="tab-pane" id="xml">
+								<div style="padding: 15px 0;">
+									<pre class="well excel-pre" v-text="xmlHTML"></pre>
+								</div>
+							</div>
+							<div class="tab-pane" id="explain">
+								<div style="padding: 15px 0;">
+									<div class="well excel-pre">
+										<small v-for="(explainItem, explainIndex) in explainConfig">
+											<div><b v-text="explainItem.title + '：'"></b></div>
+											<div v-for="(subjectItem, subjectIndex) in explainItem.subject">
+												{{'&emsp;&emsp;' + subjectItem.summary}}
+												<div v-for="(detailItem, detailIndex) in subjectItem.details">
+													{{'&emsp;&emsp;&emsp;&emsp;' + detailItem}}
+												</div>
+											</div>
+										</small>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--显示区 E-->
+				</div>
+
+				<div class="row" v-show="Object.keys(allDataOfExcels).length === 0">
+					<div class="col-md-12" style="height:41px;">
+						<!-- 为了有个高度的支撑 -->
+					</div>
+				</div>
+
+				<div class="row" v-show="Object.keys(allDataOfExcels).length !== 0">
+					<div class="col-lg-2 col-md-3 col-sm-4 col-xs-5">
+						<div class="pull-right">
+							<div class="btn-group dropup">
+								<button type="button" class="btn btn-default" v-text="chosenExcel"></button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="javascript:void(0);" v-for="(excelItem, excelName, excelIndex) in allDataOfExcels" @click="changeChosenExcel(excelName)" v-text="excelName"></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-10 col-md-9 col-sm-8 col-xs-7">
+						<div class="checkbox">
+							<label class="radio-inline" v-for="(sheetContent, sheetName, sheetIndex) in allDataOfExcels[chosenExcel]" @click="changeChosenSheet(sheetName)">
+								<input type="radio" :checked="chosenSheet === sheetName" name="sheetName"><span v-text="sheetName"></span>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<!--下载 modal S-->
+				<div class="modal" id="downloadInfo-modal">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">下载</h4>
+							</div>
+							<div class="modal-body clearfix">
+								<div class="row" style="height:500px;overflow: auto;">
+									<div class="col-md-3" v-for="(excelItem, excelName, excelIndex) in allDataOfExcels">
+										<blockquote>
+											<p v-text="excelName"></p>
+										</blockquote>
+										<div class="form-group" style="height:400px;">
+											<div class="checkbox" style="margin-bottom: 20px;">
+												<label>
+													<input type="checkbox" @click="selectAll(event, excelItem)"><b class="text-primary">全选</b>
+												</label>
+											</div>
+											<div class="checkbox" v-for="(sheetContent, sheetName, sheetIndex) in excelItem">
+												<label>
+													<input type="checkbox" :checked="sheetContent._isDownload === true" @click="sheetContent._isDownload = !sheetContent._isDownload"> <span v-text="sheetName"></span>
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<hr>
+
+								<div class="row">
+									<div class="col-md-3">
+										<div class="form-group">
+											<label>下载内容:</label>
+											<br>
+											<div class="btn-group">
+												<button type="button" class="btn btn-success" v-text="chosenCS.name"></button>
+												<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu">
+													<li><a href="javascript:void(0);" v-for="(item, index) in chosenCS_config" @click="changeChosenCS(item)" v-text="item.name"></a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="form-group">
+											<label>下载版本:</label>
+											<br>
+											<div class="btn-group">
+												<button type="button" class="btn btn-success" v-text="chosenVersion.name"></button>
+												<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu">
+													<li><a href="javascript:void(0);" v-for="(item, index) in chosenVersion_config" @click="changeChosenVersion(item)" v-text="item.name"></a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="form-group">
+											<label>下载格式:</label>
+											<br>
+											<div class="btn-group">
+												<button type="button" class="btn btn-success" v-text="chosenType.name"></button>
+												<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu">
+													<li><a href="javascript:void(0);" v-for="(item, index) in chosenType_config" @click="changeChosenType(item)" v-text="item.name"></a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-info btn-block btn-lg" @click="downloadAllSheets()"> Download </button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--下载 modal E-->
+
+			</div>
+		</div>
+		<!--excelEditor E-->
+
+        <!--loading S-->
+        <div class="loading">
+            <img src="../res/images/loading/20150210104951492.gif" alt="loading">
+        </div>
+        <!--loading E-->
+
+
+		<script type="text/javascript">
+            let scriptArr = [
+                "../js/lib/jquery.min.js",
+                "../js/lib/bootstrap.min.js",
+                "../js/lib/vue.min.js",
+                "../js/lib/vue-resource.min.js",
+                "../js/lib/xlsx.full.min.js",
+                "../js/lib/download.js",
+                "../js/lib/sweetalert.min.js",
+                "../js/util/cyber.utils.js",
+                "../js/dist/excelEditor.js"
+            ];
+
+            for (let i = 0; i < scriptArr.length; i++) {
+                //js后缀加个时间戳每回更新都会改变，浏览器视其为新的js不会进行缓存
+                document.write('<script type="text/javascript" src="' + scriptArr[i] + '?time=' + new Date().getTime() + '"><'+'/'+'script>');
+            }
+		</script>
+	</body>
+</html>

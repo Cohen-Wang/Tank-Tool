@@ -1,0 +1,55 @@
+
+starry_star.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+meteor02
+  rotate: false
+  xy: 0, 204
+  size: 412, 263
+  orig: 412, 263
+  offset: 0, 0
+  index: -1
+star01
+  rotate: false
+  xy: 0, 0
+  size: 202, 202
+  orig: 202, 202
+  offset: 0, 0
+  index: -1
+star02
+  rotate: false
+  xy: 204, 24
+  size: 179, 178
+  orig: 179, 178
+  offset: 0, 0
+  index: -1
+star03
+  rotate: false
+  xy: 842, 374
+  size: 72, 93
+  orig: 72, 93
+  offset: 0, 0
+  index: -1
+star04
+  rotate: false
+  xy: 748, 375
+  size: 92, 92
+  orig: 92, 92
+  offset: 0, 0
+  index: -1
+star05
+  rotate: false
+  xy: 618, 339
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+star07
+  rotate: false
+  xy: 414, 265
+  size: 202, 202
+  orig: 202, 202
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,152 @@
+[
+    {
+        "title" : "目录结构",
+        "content" : [
+            {
+                "type" : "dir",
+                "name" : "php",
+                "remark" : "代码",
+                "content" : [
+                    {
+                        "type" : "dir",
+                        "name" : "app",
+                        "content" : [
+                            {
+                                "type" : "file",
+                                "name" : "tool.hotUpdate.php",
+                                "remark" : "工具函数（创建文件夹，压缩包，比较两个数组的差异）"
+                            }
+                        ]
+                    },
+                    {
+                        "type" : "file",
+                        "name" : "CheckVersionAction.php",
+                        "remark" : "检测version"
+                    },
+                    {
+                        "type" : "file",
+                        "name" : "CheckMd5Action.php",
+                        "remark" : "检测md5"
+                    },
+                    {
+                        "type" : "file",
+                        "name" : "UpdateSrcAction.php",
+                        "remark" : "更新src"
+                    },
+                    {
+                        "type" : "file",
+                        "name" : "UpdateResAction.php",
+                        "remark" : "更新res"
+                    }
+                ]
+            },
+            {
+                "type" : "dir",
+                "name" : "src",
+                "remark" : "最新脚本文件夹（步骤一）（原文件：D:\\tank\\program\\Tank-Client\\res）"
+            },
+            {
+                "type" : "dir",
+                "name" : "res",
+                "remark" : "最新资源文件夹（步骤一）（原文件：D:\\tank\\program\\Tank-Lua\\src）"
+            },
+            {
+                "type" : "dir",
+                "name" : "zips",
+                "remark" : "",
+                "content" : [
+                    {
+                        "type" : "dir",
+                        "name" : "app",
+                        "content" : [
+                            {
+                                "type" : "file",
+                                "name" : "例：apk",
+                                "remark" : "客户端的信息，包括客户端最新版本号，下载地址，平台类型"
+                            }
+                        ]
+                    },
+                    {
+                        "type" : "dir",
+                        "name" : "res",
+                        "content" : [
+                            {
+                                "type" : "file",
+                                "name" : "xxx.zip",
+                                "remark" : "最新资源包，例：5.0.0（步骤四）"
+                            },
+                            {
+                                "type" : "file",
+                                "name" : "xxx_xxx.zip",
+                                "remark" : "增量资源包，例：4.0.0_5.0.0（程序生成）"
+                            }
+                        ]
+                    },
+                    {
+                        "type" : "dir",
+                        "name" : "src",
+                        "content" : [
+                            {
+                                "type" : "file",
+                                "name" :  "xxx.zip",
+                                "remark" : "最新脚本包，例：6.0.0（步骤四）"
+                            },
+                            {
+                                "type" : "file",
+                                "name" :  "xxx_xxx.zip",
+                                "remark" : "增量脚本包，例：2.0.0_6.0.0（程序生成）"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type" : "file",
+                "name" : "AppManifest.json",
+                "remark" : "应用清单（步骤二）"
+            },
+            {
+                "type" : "file",
+                "name" : "SrcManifest.json",
+                "remark" : "脚本清单（步骤二）"
+            },
+            {
+                "type" : "file",
+                "name" : "ResManifest.json",
+                "remark" : "资源清单（步骤二）"
+            },
+            {
+                "type" : "file",
+                "name" : "config.json",
+                "remark" : "配置文件（步骤三）"
+            }
+        ]
+    },
+    {
+        "title" : "更新流程",
+        "content" : [
+            {"name" : "将D:\\tank\\program\\Tank-Client\\res文件夹拿到Tank-Update文件夹下"},
+            {"name" : "将D:\\tank\\program\\Tank-Lua\\src文件夹拿到Tank-Update文件夹下"},
+            {"name" : "手动修改ResManifest.json的version值"},
+            {"name" : "手动修改SrcManifest.json的version值"},
+            {"name" : "通过文伟伟的程序生成res文件夹下所有文件md5列表并替换ResManifest.json的assets值"},
+            {"name" : "通过文伟伟的程序生成src文件夹下所有文件md5列表并替换SrcManifest.json的assets值"},
+            {"name" : "将新的ResManifest.json文件，通过http://tool.chinaz.com/Tools/md5.aspx，获取新的md5值"},
+            {"name" : "将新的SrcManifest.json文件，通过http://tool.chinaz.com/Tools/md5.aspx，获取新的md5值"},
+            {"name" : "修改config.json的res配置"},
+            {"name" : "修改config.json的src配置"},
+            {"name" : "选中res文件夹 和 ResManifest.json文件 -> 右键选中压缩后 -> 更改文件名为版本号，如：5.0.0，并切换压缩模式为ZIP（不能是RAR）"},
+            {"name" : "选中src文件夹 和 SrcManifest.json文件 -> 右键选中压缩后 -> 更改文件名为版本号，如：5.0.0，并切换压缩模式为ZIP（不能是RAR）"},
+            {"name" : "复制res的zips文件到zips/res内"},
+            {"name" : "复制src的zips文件到zips/src内"}
+        ]
+    },
+    {
+        "title" : "测试内容",
+        "content" : [
+            {"name" : "更新过程中，如果下载一半。用户断网了，怎么办？"},
+            {"name" : "解压过程中，如果解压一半。怎么办？"},
+            {"name" : "解压包，解压完manifest，但是其他文件并没有更新，怎么办？"}
+        ]
+    }
+]

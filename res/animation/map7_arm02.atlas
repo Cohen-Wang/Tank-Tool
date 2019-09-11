@@ -1,0 +1,27 @@
+
+map7_arm02.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+light01
+  rotate: false
+  xy: 274, 280
+  size: 298, 198
+  orig: 298, 198
+  offset: 0, 0
+  index: -1
+light02
+  rotate: false
+  xy: 0, 20
+  size: 272, 458
+  orig: 272, 458
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 0, 0
+  size: 17, 18
+  orig: 17, 18
+  offset: 0, 0
+  index: -1

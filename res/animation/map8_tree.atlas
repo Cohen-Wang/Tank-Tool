@@ -1,0 +1,47 @@
+
+map8_tree.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+leave01
+  rotate: false
+  xy: 0, 0
+  size: 666, 310
+  orig: 666, 310
+  offset: 0, 0
+  index: -1
+leaves02
+  rotate: false
+  xy: 837, 1302
+  size: 626, 386
+  orig: 626, 386
+  offset: 0, 0
+  index: -1
+tree01
+  rotate: false
+  xy: 0, 312
+  size: 835, 1720
+  orig: 835, 1720
+  offset: 0, 0
+  index: -1
+tree02
+  rotate: false
+  xy: 837, 1690
+  size: 1166, 342
+  orig: 1166, 342
+  offset: 0, 0
+  index: -1
+
+map8_tree2.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+leaves03
+  rotate: false
+  xy: 0, 0
+  size: 1710, 803
+  orig: 1710, 803
+  offset: 0, 0
+  index: -1

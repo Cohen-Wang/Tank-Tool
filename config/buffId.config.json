@@ -1,0 +1,749 @@
+[
+	{
+		"skill_effect" : 1,
+		"introduce" : "炮弹伤害",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "对什么造成伤害",
+				"details" : [
+					{"value" : 0, "introduce" : "不做任何处理"},
+					{"value" : 701 , "introduce" : "当前生命值"},
+					{"value" : 702 , "introduce" : "当前电量"},
+					{"value" : 703 , "introduce" : "当前护盾值"}
+				]
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "造成伤害类型",
+				"details" : [
+					{"value" : 0, "introduce" : "不做任何处理"},
+					{"value" : 601 , "introduce" : "造成动能伤害伤害"},
+					{"value" : 602 , "introduce" : "造成热能伤害"},
+					{"value" : 603 , "introduce" : "造成电磁能伤害"},
+					{"value" : 604 , "introduce" : "造成腐蚀伤害"}
+				]
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "百分比"
+			},
+			{
+				"parameter" : 4,
+				"introduce" : "伤害次数"
+			},
+			{
+				"parameter" : 5,
+				"introduce" : "伤害时间"
+			}
+		]
+	},
+    {
+        "skill_effect" : 2,
+        "introduce" : "dot/hot",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "效果类型",
+				"details" : [
+					{"value" : 601 , "introduce" : "直接恢复生命"},
+					{"value" : 602 , "introduce" : "直接恢复护盾值"},
+					{"value" : 603 , "introduce" : "直接恢复电量"},
+					{"value" : 701 , "introduce" : "直接动能伤害"},
+					{"value" : 702 , "introduce" : "直接热能伤害"},
+					{"value" : 703 , "introduce" : "直接电磁伤害"},
+					{"value" : 704 , "introduce" : "直接腐蚀伤害"},
+					{"value" : 201 , "introduce" : "攻击加成"},
+					{"value" : 202 , "introduce" : "造成动能伤害加成"},
+					{"value" : 203 , "introduce" : "造成热能伤害加成"},
+					{"value" : 204 , "introduce" : "造成电磁能伤害加成"},
+					{"value" : 205 , "introduce" : "造成腐蚀伤害加成"},
+					{"value" : 206 , "introduce" : "射程"},
+					{"value" : 207 , "introduce" : "发射角"},
+					{"value" : 208 , "introduce" : "暴击"},
+					{"value" : 211 , "introduce" : "生命上限"},
+					{"value" : 212 , "introduce" : "护盾上限"},
+					{"value" : 213 , "introduce" : "电量上限"},
+					{"value" : 214 , "introduce" : "当前生命"},
+					{"value" : 215 , "introduce" : "当前护盾"},
+					{"value" : 216 , "introduce" : "当前电量"},
+					{"value" : 221 , "introduce" : "受到动能伤害减免"},
+					{"value" : 222 , "introduce" : "受到热能伤害减免"},
+					{"value" : 223 , "introduce" : "受到电磁伤害减免"},
+					{"value" : 224 , "introduce" : "受到腐蚀伤害减免"},
+					{"value" : 231 , "introduce" : "生命自动周期恢复"},
+					{"value" : 232 , "introduce" : "护盾自动周期恢复"},
+					{"value" : 233 , "introduce" : "电量自动周期恢复"},
+					{"value" : 234 , "introduce" : "生命恢复额外加成"},
+					{"value" : 235 , "introduce" : "护盾恢复额外加成"},
+					{"value" : 236 , "introduce" : "电量恢复额外加成"},
+					{"value" : 241 , "introduce" : "动力值"},
+					{"value" : 242 , "introduce" : "移动速度"},
+					{"value" : 243 , "introduce" : "减速效果降低"},
+					{"value" : 244 , "introduce" : "越野能力值"},
+					{"value" : 245 , "introduce" : "爬坡角度"},
+					{"value" : 246 , "introduce" : "移动耗电量"},
+					{"value" : 251 , "introduce" : "技能耗电量加成"},
+					{"value" : 251 , "introduce" : "技能冷却时间加成"},
+					{"value" : 251 , "introduce" : "炮弹冷却时间加成"},
+					{"value" : 251 , "introduce" : "炮弹爆炸范围系数"},
+					{"value" : 261 , "introduce" : "弹道长度"},
+					{"value" : 262 , "introduce" : "跳跃高度"}
+				]
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "数值类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "实数"},
+					{"value" : 2 , "introduce" : "万分比"}
+				]
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "数值"
+			},
+			{
+				"parameter" : 4,
+				"introduce" : "生效间隔"
+			},
+			{
+				"parameter" : 5,
+				"introduce" : "净化分类",
+				"details" : [
+					{"value" : 0 , "introduce" : "不可被净化"},
+					{"value" : 1 , "introduce" : "禁锢类"},
+					{"value" : 2 , "introduce" : "debuff类"},
+					{"value" : 3 , "introduce" : "buff类"},
+					{"value" : 4 , "introduce" : "dot类"},
+					{"value" : 5 , "introduce" : "hot类"}
+				]
+			},
+			{
+				"parameter" : 6,
+				"introduce" : "叠加类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "刷新"},
+					{"value" : 2 , "introduce" : "累加"},
+					{"value" : 3 , "introduce" : "并存"}
+				]
+			},
+			{
+				"parameter" : 7,
+				"introduce" : "结束后是否返还",
+				"details" : [
+					{"value" : 0 , "introduce" : "返还"},
+					{"value" : 1 , "introduce" : "不返还"}
+				]
+			}
+		]
+    },
+    {
+        "skill_effect" : 3,
+        "introduce" : "buff/debuff",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "buff类型",
+				"details" : [
+					{"value" : 201 , "introduce" : "攻击加成"},
+					{"value" : 202 , "introduce" : "造成动能伤害加成"},
+					{"value" : 203 , "introduce" : "造成热能伤害加成"},
+					{"value" : 204 , "introduce" : "造成电磁能伤害加成"},
+					{"value" : 205 , "introduce" : "造成腐蚀伤害加成"},
+					{"value" : 206 , "introduce" : "射程"},
+					{"value" : 207 , "introduce" : "发射角"},
+					{"value" : 208 , "introduce" : "暴击"},
+					{"value" : 211 , "introduce" : "生命上限"},
+					{"value" : 212 , "introduce" : "护盾上限"},
+					{"value" : 213 , "introduce" : "电量上限"},
+					{"value" : 214 , "introduce" : "当前生命"},
+					{"value" : 215 , "introduce" : "当前护盾"},
+					{"value" : 216 , "introduce" : "当前电量"},
+					{"value" : 221 , "introduce" : "受到动能伤害减免"},
+					{"value" : 222 , "introduce" : "受到热能伤害减免"},
+					{"value" : 223 , "introduce" : "受到电磁伤害减免"},
+					{"value" : 224 , "introduce" : "受到腐蚀伤害减免"},
+					{"value" : 231 , "introduce" : "生命自动周期恢复"},
+					{"value" : 232 , "introduce" : "护盾自动周期恢复"},
+					{"value" : 233 , "introduce" : "电量自动周期恢复"},
+					{"value" : 234 , "introduce" : "生命恢复额外加成"},
+					{"value" : 235 , "introduce" : "护盾恢复额外加成"},
+					{"value" : 236 , "introduce" : "电量恢复额外加成"},
+					{"value" : 241 , "introduce" : "动力值"},
+					{"value" : 242 , "introduce" : "移动速度"},
+					{"value" : 243 , "introduce" : "减速效果降低"},
+					{"value" : 244 , "introduce" : "越野能力值"},
+					{"value" : 245 , "introduce" : "爬坡角度"},
+					{"value" : 246 , "introduce" : "移动耗电量"},
+					{"value" : 251 , "introduce" : "技能耗电量加成"},
+					{"value" : 252 , "introduce" : "技能冷却时间加成"},
+					{"value" : 253 , "introduce" : "炮弹冷却时间加成"},
+					{"value" : 254 , "introduce" : "炮弹爆炸范围系数"},
+					{"value" : 261 , "introduce" : "弹道长度"},
+					{"value" : 261 , "introduce" : "跳跃高度"}
+				]
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "数值类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "实数"},
+					{"value" : 2 , "introduce" : "万分比"}
+				]
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "数值"
+			},
+			{
+				"parameter" : 4,
+				"introduce" : "净化分类",
+				"details" : [
+					{"value" : 0 , "introduce" : "不可被净化"},
+					{"value" : 1 , "introduce" : "禁锢类"},
+					{"value" : 2 , "introduce" : "debuff类"},
+					{"value" : 3 , "introduce" : "buff类"},
+					{"value" : 4 , "introduce" : "dot类"},
+					{"value" : 5 , "introduce" : "hot类"}
+				]
+			},
+			{
+				"parameter" : 5,
+				"introduce" : "叠加类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "刷新"},
+					{"value" : 2 , "introduce" : "累加"},
+					{"value" : 3 , "introduce" : "并存"}
+				]
+			}
+		]
+    },
+    {
+        "skill_effect" : 4,
+        "introduce" : "领域dot/hot",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "作用范围"
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "作用个数"
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "Dot/Hot的效果ID"
+			}
+		]
+    },
+    {
+        "skill_effect" : 5,
+        "introduce" : "领域buff/debuff",
+        "describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "作用范围"
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "作用个数"
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "Buff/DeBbuff的效果ID"
+			}
+        ]
+    },
+    {
+        "skill_effect" : 6,
+        "introduce" : "免疫伤害",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "次数"
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "免疫最大伤害值"
+			}
+		]
+    },
+    {
+        "skill_effect" : 7,
+        "introduce" : "飞行",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "每0.1秒耗电量"
+			}
+		]
+    },
+    {
+		"skill_effect" : 8,
+		"introduce" : "无视地形",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "冲撞距离"
+			}
+		]
+	},
+    {
+		"skill_effect" : 9,
+		"introduce" : "传送",
+		"describe" : ""
+	},
+    {
+		"skill_effect" : 10,
+		"introduce" : "跳跃",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "起跳高度"
+			}
+		]
+	},
+    {
+		"skill_effect" : 11,
+		"introduce" : "预留"
+	},
+    {
+		"skill_effect" : 12,
+		"introduce" : "清除不良效果",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "净化类型id"
+			}
+		]
+	},
+    {
+		"skill_effect" : 13,
+		"introduce" : "冷却降低",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "冷却降低类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "炮弹冷却时间立即减少x回合"},
+					{"value" : 2 , "introduce" : "技能冷却时间立即减少x回合"},
+					{"value" : 3 , "introduce" : "炮弹和技能冷却时间立即减少x回合"},
+					{"value" : 4 , "introduce" : "当前使用炮弹冷却降低"},
+					{"value" : 5 , "introduce" : "当前使用技能冷却降低"}
+				]
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "减少回合"
+			}
+		]
+	},
+    {
+		"skill_effect" : 14,
+		"introduce" : "伤害提升",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "次数"
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "数值类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "实数"},
+					{"value" : 2 , "introduce" : "万分比"}
+				]
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "加成值"
+			}
+		]
+	},
+    {
+		"skill_effect" : 15,
+		"introduce" : "直接伤害",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "对什么造成伤害",
+				"details" : [
+					{"value" : 0, "introduce" : "不做任何处理"},
+					{"value" : 701 , "introduce" : "当前生命值"},
+					{"value" : 702 , "introduce" : "当前电量"},
+					{"value" : 703 , "introduce" : "当前护盾值"}
+				]
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "造成伤害类型",
+				"details" : [
+					{"value" : 0, "introduce" : "不做任何处理"},
+					{"value" : 601 , "introduce" : "造成动能伤害伤害"},
+					{"value" : 602 , "introduce" : "造成热能伤害"},
+					{"value" : 603 , "introduce" : "造成电磁能伤害"},
+					{"value" : 604 , "introduce" : "造成腐蚀伤害"}
+				]
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "数值类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "实数"},
+					{"value" : 2 , "introduce" : "万分比"}
+				]
+			},
+			{
+				"parameter" : 4,
+				"introduce" : "改变值"
+			}
+		]
+	},
+    {
+		"skill_effect" : 16,
+		"introduce" : "直接治疗",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "治疗类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "先增加生命值，生命值满了加护盾"},
+					{"value" : 2 , "introduce" : "只增加生命值"},
+					{"value" : 3 , "introduce" : "只增加护盾值"},
+					{"value" : 4 , "introduce" : "只增加电量"}
+				]
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "数值类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "实数"},
+					{"value" : 2 , "introduce" : "万分比"}
+				]
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "治疗值"
+			}
+		]
+	},
+    {
+		"skill_effect" : 17,
+		"introduce" : "隐身",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "范围距离"
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "被命中是否现身",
+				"details" : [
+					{"value" : 0 , "introduce" : "不现身"},
+					{"value" : 1 , "introduce" : "现身"}
+				]
+			}
+		]
+	},
+    {
+		"skill_effect" : 18,
+		"introduce" : "显示距离信息",
+		"describe" : ""
+	},
+    {
+		"skill_effect" : 19,
+		"introduce" : "预留"
+	},
+    {
+		"skill_effect" : 20,
+		"introduce" : "预留"
+	},
+    {
+		"skill_effect" : 21,
+		"introduce" : "预留"
+	},
+    {
+		"skill_effect" : 22,
+		"introduce" : "发射一个特殊炮弹",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "炮弹数量"
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "炮弹id"
+			}
+		]
+	},
+    {
+		"skill_effect" : 23,
+		"introduce" : "布雷技能",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "物品id"
+			}
+		]
+	},
+    {
+		"skill_effect" : 24,
+		"introduce" : "预留"
+	},
+    {
+		"skill_effect" : 25,
+		"introduce" : "本回合发射炮弹CD变化",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "变化回合数"
+			}
+		]
+	},
+    {
+		"skill_effect" : 26,
+		"introduce" : "下一次发射的具有追踪效果",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "作用范围"
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "旋转速率"
+			}
+		]
+	},
+    {
+		"skill_effect" : 27,
+		"introduce" : "立即结束当前回合",
+		"describe" : ""
+	},
+    {
+		"skill_effect" : 28,
+		"introduce" : "预留"
+	},
+    {
+		"skill_effect" : 29,
+		"introduce" : "召唤空投",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "空投类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "炮弹空投"},
+					{"value" : 2 , "introduce" : "生命空投"},
+					{"value" : 3 , "introduce" : "护盾空投"},
+					{"value" : 4 , "introduce" : "陷阱空投"},
+					{"value" : 5 , "introduce" : "随机空投"},
+					{"value" : 6 , "introduce" : "待添加"}
+				]
+			}
+		]
+	},
+    {
+		"skill_effect" : 30,
+		"introduce" : "扣减范围内敌人的，增加自己的",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "buff类型",
+				"details" : [
+					{"value" : 201 , "introduce" : "攻击加成"},
+					{"value" : 202 , "introduce" : "造成动能伤害加成"},
+					{"value" : 203 , "introduce" : "造成热能伤害加成"},
+					{"value" : 204 , "introduce" : "造成电磁能伤害加成"},
+					{"value" : 205 , "introduce" : "造成腐蚀伤害加成"},
+					{"value" : 206 , "introduce" : "射程"},
+					{"value" : 207 , "introduce" : "发射角"},
+					{"value" : 208 , "introduce" : "暴击"},
+					{"value" : 211 , "introduce" : "生命上限"},
+					{"value" : 212 , "introduce" : "护盾上限"},
+					{"value" : 213 , "introduce" : "电量上限"},
+					{"value" : 214 , "introduce" : "当前生命"},
+					{"value" : 215 , "introduce" : "当前护盾"},
+					{"value" : 216 , "introduce" : "当前电量"},
+					{"value" : 221 , "introduce" : "受到动能伤害减免"},
+					{"value" : 222 , "introduce" : "受到热能伤害减免"},
+					{"value" : 223 , "introduce" : "受到电磁伤害减免"},
+					{"value" : 224 , "introduce" : "受到腐蚀伤害减免"},
+					{"value" : 231 , "introduce" : "生命自动周期恢复"},
+					{"value" : 232 , "introduce" : "护盾自动周期恢复"},
+					{"value" : 233 , "introduce" : "电量自动周期恢复"},
+					{"value" : 234 , "introduce" : "生命恢复额外加成"},
+					{"value" : 235 , "introduce" : "护盾恢复额外加成"},
+					{"value" : 236 , "introduce" : "电量恢复额外加成"},
+					{"value" : 241 , "introduce" : "动力值"},
+					{"value" : 242 , "introduce" : "移动速度"},
+					{"value" : 243 , "introduce" : "减速效果降低"},
+					{"value" : 244 , "introduce" : "越野能力值"},
+					{"value" : 245 , "introduce" : "爬坡角度"},
+					{"value" : 246 , "introduce" : "移动耗电量"},
+					{"value" : 251 , "introduce" : "技能耗电量加成"},
+					{"value" : 252 , "introduce" : "技能冷却时间加成"},
+					{"value" : 253 , "introduce" : "炮弹冷却时间加成"},
+					{"value" : 254 , "introduce" : "炮弹爆炸范围系数"},
+					{"value" : 261 , "introduce" : "弹道长度"},
+					{"value" : 261 , "introduce" : "跳跃高度"}
+				]
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "作用于敌方的值",
+				"details" : ""
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "作用于自己的万分比",
+				"details" : ""
+			},
+			{
+				"parameter" : 4,
+				"introduce" : "生效间隔",
+				"details" : ""
+			},
+			{
+				"parameter" : 5,
+				"introduce" : "结束后是否返还",
+				"details" : [
+					{"value" : 0 , "introduce" : "返回"},
+					{"value" : 1 , "introduce" : "不返回"}
+				]
+			}
+		]
+	},
+    {
+		"skill_effect" : 31,
+		"introduce" : "预留"
+	},
+    {
+		"skill_effect" : 32,
+		"introduce" : "预留"
+	},
+    {
+		"skill_effect" : 33,
+		"introduce" : "弹道计算考虑风速",
+		"describe" : ""
+	},
+    {
+		"skill_effect" : 34,
+		"introduce" : "限制技能",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "限制内容",
+				"details" : [
+					{"value" : 1 , "introduce" : "能否移动"},
+					{"value" : 2 , "introduce" : "能否攻击"},
+					{"value" : 3 , "introduce" : "能否使用技能"},
+					{"value" : 4 , "introduce" : "能否显示弹道"},
+					{"value" : 5 , "introduce" : "能否回血"},
+					{"value" : 6 , "introduce" : "能否回盾"},
+					{"value" : 7 , "introduce" : "能否回电"},
+					{"value" : 8 , "introduce" : "能否飞行"},
+					{"value" : 9 , "introduce" : "能否隐身"},
+					{"value" : 10 , "introduce" : "能否跳跃"}
+				]
+			}
+		]
+	},
+    {
+		"skill_effect" : 35,
+		"introduce" : "被动触发",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "触发条件监听类型",
+				"details" : [
+					{"value" : 0 , "introduce" : "无条件,监听值也为0"},
+					{"value" : 1 , "introduce" : "生命值低于百分比"},
+					{"value" : 2 , "introduce" : "护盾低于百分比"},
+					{"value" : 3 , "introduce" : "电量低于百分比"},
+					{"value" : 4 , "introduce" : "受到伤害时，将伤害值转化"},
+					{"value" : 5 , "introduce" : "受到致命伤害时，生命值将为1"},
+					{"value" : 6 , "introduce" : "发射x次炮弹后"}
+				]
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "监听值",
+				"details" : ""
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "触发效果1的ID",
+				"details" : ""
+			},
+			{
+				"parameter" : 4,
+				"introduce" : "触发效果2的ID",
+				"details" : ""
+			}
+		]
+	},
+	{
+		"skill_effect" : 36,
+		"introduce" : "领域限制技能",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "限制内容",
+				"details" : [
+					{"value" : 1 , "introduce" : "能否移动"},
+					{"value" : 2 , "introduce" : "能否攻击"},
+					{"value" : 3 , "introduce" : "能否使用技能"},
+					{"value" : 4 , "introduce" : "能否显示弹道"},
+					{"value" : 5 , "introduce" : "能否回血"},
+					{"value" : 6 , "introduce" : "能否回盾"},
+					{"value" : 7 , "introduce" : "能否回电"},
+					{"value" : 8 , "introduce" : "能否飞行"},
+					{"value" : 9 , "introduce" : "能否隐身"},
+					{"value" : 10 , "introduce" : "能否跳跃"}
+				]
+			}
+		]
+	},
+	{
+		"skill_effect" : 37,
+		"introduce" : "生成一个新模型",
+		"describe" : [
+			{
+				"parameter" : 1,
+				"introduce" : "生成位置",
+				"details" : [
+					{"value" : 1 , "introduce" : "挂在施法者身上"},
+					{"value" : 2 , "introduce" : "施法者所处位置"},
+					{"value" : 3 , "introduce" : "从天而降"}
+				]
+
+			},
+			{
+				"parameter" : 2,
+				"introduce" : "生成的模型ID",
+				"details" : ""
+			},
+			{
+				"parameter" : 3,
+				"introduce" : "生成的模型类型",
+				"details" : [
+					{"value" : 1 , "introduce" : "保护地形不被破坏"},
+					{"value" : 2 , "introduce" : "光幕墙"},
+					{"value" : 3 , "introduce" : "保护罩"},
+					{"value" : 4 , "introduce" : "火墙"},
+					{"value" : 5 , "introduce" : "补给箱"},
+					{"value" : 6 , "introduce" : "引力场"},
+                    {"value" : 7 , "introduce" : "毒雾"},
+                    {"value" : 8 , "introduce" : "地雷"},
+                    {"value" : 9 , "introduce" : "自爆小车"},
+                    {"value" : 10 , "introduce" : "定时炸弹"}
+				]
+			},
+			{
+				"parameter" : 4,
+				"introduce" : "模型回合是否给镜头",
+				"details" : ""
+			}
+		]
+	}
+]

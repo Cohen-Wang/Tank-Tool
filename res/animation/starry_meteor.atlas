@@ -1,0 +1,20 @@
+
+starry_meteor.png
+size: 1024,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+meteor
+  rotate: false
+  xy: 0, 106
+  size: 664, 13
+  orig: 664, 13
+  offset: 0, 0
+  index: -1
+meteor_light
+  rotate: false
+  xy: 0, 0
+  size: 243, 104
+  orig: 243, 104
+  offset: 0, 0
+  index: -1
