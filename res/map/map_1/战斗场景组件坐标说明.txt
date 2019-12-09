@@ -1,0 +1,13 @@
+
+左背景：
+
+地形描边线条色值R:75，G:29，B:58，描边4px
+
+ui_battle_map_1_decoration__gear（2202,824）【此动画坐标以组件中心点计算】
+
+ui_battle_map_1__fog（749,818）在场景中放大到500% 【此动画坐标以组件中心点计算】
+
+
+
+ui_battle_map_1_decoration_steam （3699,838） 【此动画坐标以组件中心点计算】
+

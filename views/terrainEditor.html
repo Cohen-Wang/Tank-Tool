@@ -113,7 +113,13 @@
 
                         <div class="panel panel-default">
                             <div class="panel-body" style="height:750px;overflow: auto;padding: 0;">
-                                <canvas id="canvas" @mousemove="canvasMoveFn()" @click="canvasClickFn()" style="transform-origin: left top" :style="{'transform':'scale('+ canvasScale +')'}"></canvas>
+                                <canvas id="canvas"
+                                        @mousemove="canvasMoveFn()"
+                                        @click="canvasClickFn()"
+                                        style="transform-origin: left top"
+                                        :style="{'transform':'scale('+ canvasScale +')'}"
+                                >
+                                </canvas>
                             </div>
                         </div>
                     </div>
